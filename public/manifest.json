@@ -1,0 +1,12 @@
+{
+  "name": "Kyrgyz Learning App",
+  "short_name": "Kyrgyz Learn",
+  "description": "Learn Kyrgyz language with AI-powered translations and perfect pronunciation",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait",
+  "categories": ["education", "productivity"],
+  "lang": "en-US"
+}
