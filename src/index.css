@@ -35,3 +35,23 @@ body {
     @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
   }
 }
+
+@layer utilities {
+  @keyframes bounce-up {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-50px) scale(1.2);
+      opacity: 1;
+    }
+    90% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-bounce-up {
+    animation: bounce-up 2s ease-out;
+  }
+}
