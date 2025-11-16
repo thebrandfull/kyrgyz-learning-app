@@ -108,6 +108,12 @@ export const getLesson = async (lessonId, userId = null) => {
 
     if (questionsError) throw questionsError
 
+    // Parse JSON options field
+    const parsedQuestions = questions.map(q => ({
+      ...q,
+      options: typeof q.options === 'string' ? JSON.parse(q.options) : q.options
+    }))
+
     if (userId) {
       // Get user progress for this lesson
       const { data: progress, error: progressError } = await supabase
@@ -120,12 +126,12 @@ export const getLesson = async (lessonId, userId = null) => {
       if (progressError && progressError.code !== 'PGRST116') throw progressError
 
       return {
-        data: { ...lesson, questions, progress: progress || null },
+        data: { ...lesson, questions: parsedQuestions, progress: progress || null },
         error: null,
       }
     }
 
-    return { data: { ...lesson, questions }, error: null }
+    return { data: { ...lesson, questions: parsedQuestions }, error: null }
   } catch (error) {
     console.error('Error fetching lesson:', error)
     return { data: null, error }

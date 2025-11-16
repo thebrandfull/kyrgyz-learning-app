@@ -1,9 +1,7 @@
 import { supabase } from './supabase'
 
 // Save lesson completion
-export const completeLes
-
-son = async (userId, lessonId, score, totalQuestions) => {
+export const completeLesson = async (userId, lessonId, score, totalQuestions) => {
   try {
     const percentage = Math.round((score / totalQuestions) * 100)
     const stars = calculateStars(percentage)
