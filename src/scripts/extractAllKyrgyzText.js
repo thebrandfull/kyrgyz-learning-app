@@ -44,19 +44,11 @@ const audioToGenerate = []
 const textsArray = Array.from(kyrgyzTexts).sort()
 
 textsArray.forEach((text, index) => {
-  // Create a safe key from the text
-  let key = text
-    .replace(/[^\u0400-\u04FFa-zA-Z0-9]/g, '_') // Replace non-alphanumeric with underscore
-    .substring(0, 50) // Limit length
-    .toLowerCase()
-
-  // If key is too short or all underscores, use index
-  if (key.length < 3 || key.replace(/_/g, '').length === 0) {
-    key = `audio_${index}`
-  }
+  // Use simple numeric key since Supabase doesn't accept Cyrillic in filenames
+  const key = `kyrgyz_audio_${String(index).padStart(4, '0')}`
 
   audioToGenerate.push({
-    key: `${key}_${index}`,
+    key: key,
     text: text
   })
 })
