@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import SpeechButton from '../SpeechButton'
 
 export default function ConversationPractice({ question, onAnswer }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
@@ -25,12 +24,11 @@ export default function ConversationPractice({ question, onAnswer }) {
         <h3 className="text-lg font-bold text-gray-800 mb-4">Conversation</h3>
         <div className="space-y-3">
           {question.dialogue?.map((line, index) => (
-            <div key={index} className="flex gap-3 items-center">
+            <div key={index} className="flex gap-3">
               <span className="font-semibold text-blue-600 min-w-[80px]">
                 {line.speaker}:
               </span>
               <p className="text-gray-800 flex-1">{line.text}</p>
-              <SpeechButton text={line.text} className="w-7 h-7" />
             </div>
           ))}
         </div>
@@ -40,13 +38,6 @@ export default function ConversationPractice({ question, onAnswer }) {
         <p className="text-center text-lg font-semibold text-gray-800 mb-4">
           {question.question_prompt}
         </p>
-        <div className="flex justify-center mb-4">
-          <SpeechButton
-            text={question.question_prompt}
-            className="w-8 h-8"
-            label="Play prompt"
-          />
-        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {question.options.map((option, index) => {
             const isSelected = selectedAnswer === option

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import SpeechButton from '../SpeechButton'
+import AudioButton from '../AudioButton'
 
 export default function MatchingPairs({ question, onAnswer }) {
   const [selected, setSelected] = useState({ left: null, right: null })
@@ -96,11 +96,11 @@ export default function MatchingPairs({ question, onAnswer }) {
                     : 'hover:shadow-lg hover:scale-105 border-2 border-transparent'
                 }`}
               >
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
                   <span className="text-lg font-bold text-gray-800">
                     {item.kyrgyz}
                   </span>
-                  <SpeechButton text={item.kyrgyz} className="w-7 h-7" />
+                  <AudioButton text={item.kyrgyz} size="sm" />
                 </div>
                 {isMatched && <span className="ml-2">✅</span>}
               </button>

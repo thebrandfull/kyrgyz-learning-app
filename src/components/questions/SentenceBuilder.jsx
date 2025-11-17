@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import SpeechButton from '../SpeechButton'
 
 export default function SentenceBuilder({ question, onAnswer }) {
   const [availableWords, setAvailableWords] = useState([])
@@ -76,14 +75,6 @@ export default function SentenceBuilder({ question, onAnswer }) {
             ))}
           </div>
         )}
-      </div>
-
-      <div className="flex justify-center">
-        <SpeechButton
-          text={question.correct_answer}
-          label="Play target sentence"
-          className="w-10 h-10"
-        />
       </div>
 
       {/* Available Words */}

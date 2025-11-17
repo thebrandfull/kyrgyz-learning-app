@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import SpeechButton from '../SpeechButton'
+import AudioButton from '../AudioButton'
 
 export default function MultipleChoice({ question, onAnswer }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
@@ -22,11 +22,13 @@ export default function MultipleChoice({ question, onAnswer }) {
   return (
     <div className="space-y-6">
       {/* Question Text */}
-      <div className="text-center flex flex-col items-center gap-2">
-        <h3 className="text-2xl font-bold text-gray-800">
-          {question.question_text}
-        </h3>
-        <SpeechButton text={question.prompt_audio_text || question.question_text} />
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-3">
+          <h3 className="text-2xl font-bold text-gray-800">
+            {question.question_text}
+          </h3>
+          <AudioButton text={question.question_text} />
+        </div>
       </div>
 
       {/* Options */}
@@ -56,11 +58,13 @@ export default function MultipleChoice({ question, onAnswer }) {
               disabled={showFeedback}
               className={className}
             >
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-xl font-semibold text-gray-800">
-                  {option}
-                </span>
-                <SpeechButton text={option} className="w-7 h-7" />
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 flex-1">
+                  <span className="text-xl font-semibold text-gray-800">
+                    {option}
+                  </span>
+                  <AudioButton text={option} size="sm" />
+                </div>
                 {showFeedback && isSelected && (
                   <span className="text-2xl">
                     {isCorrect ? '✅' : '❌'}
