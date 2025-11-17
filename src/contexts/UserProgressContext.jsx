@@ -39,15 +39,13 @@ export const UserProgressProvider = ({ children }) => {
         .from('user_stats')
         .select('*')
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       if (error) {
+        throw error
+      } else if (!data) {
         // Create stats if they don't exist
-        if (error.code === 'PGRST116') {
-          await createStats()
-        } else {
-          throw error
-        }
+        await createStats()
       } else {
         setStats(data)
       }

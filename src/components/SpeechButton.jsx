@@ -35,11 +35,18 @@ export default function SpeechButton({ text, language = 'ky', className = '', la
   }
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       aria-label={label}
       onClick={handlePlay}
-      className={`flex items-center justify-center rounded-full border border-blue-300 bg-white text-blue-600 hover:bg-blue-50 transition-colors w-8 h-8 ${className}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handlePlay(e)
+        }
+      }}
+      className={`flex items-center justify-center rounded-full border border-blue-300 bg-white text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer w-8 h-8 ${className}`}
     >
       {loading ? (
         <span className="animate-pulse text-sm">···</span>
@@ -52,6 +59,6 @@ export default function SpeechButton({ text, language = 'ky', className = '', la
           <path d="M9 4.804A.75.75 0 0 0 7.85 4.2L4.184 7H2.75A1.75 1.75 0 0 0 1 8.75v2.5A1.75 1.75 0 0 0 2.75 13h1.434l3.666 2.8A.75.75 0 0 0 9 15.196V4.804ZM12.32 6.25a.75.75 0 0 1 1.06.1 5 5 0 0 1 0 6.8.75.75 0 0 1-1.16-.96 3.5 3.5 0 0 0 0-4.88.75.75 0 0 1 .1-1.06Zm2.9-2.44a.75.75 0 0 1 1.06.1 8 8 0 0 1 0 11.18.75.75 0 0 1-1.16-.96 6.5 6.5 0 0 0 0-9.26.75.75 0 0 1 .1-1.06Z" />
         </svg>
       )}
-    </button>
+    </div>
   )
 }
