@@ -1,8 +1,18 @@
 import { useState } from 'react'
 import { generateSpeech } from '../services/elevenlabs'
+import audioUrlMapping from '../data/audioUrlsFull.json'
+import { audioToGenerateFull } from '../data/audioToGenerateFull.js'
 
-// In-memory cache for generated audio
+// In-memory cache for runtime-generated audio only
 const audioCache = new Map()
+
+// Create reverse lookup: text -> audio URL
+const textToUrlMap = new Map()
+audioToGenerateFull.forEach(({ key, text }) => {
+  if (audioUrlMapping[key]) {
+    textToUrlMap.set(text, audioUrlMapping[key])
+  }
+})
 
 export default function AudioButton({ text, language = 'ky', className = '', size = 'md' }) {
   const [loading, setLoading] = useState(false)
@@ -27,9 +37,23 @@ export default function AudioButton({ text, language = 'ky', className = '', siz
 
     try {
       setLoading(true)
+
+      // PRIORITY 1: Check if we have a pre-generated audio file for this text
+      const preGeneratedUrl = textToUrlMap.get(text)
+      if (preGeneratedUrl) {
+        console.log('✅ Using pre-generated audio for:', text.substring(0, 30))
+        const audio = new Audio(preGeneratedUrl)
+        await audio.play()
+        setLoading(false)
+        return
+      }
+
+      // PRIORITY 2: Check runtime cache for previously generated audio
       let audioUrl = audioCache.get(text)
 
+      // PRIORITY 3: Generate new audio (fallback for user-generated content)
       if (!audioUrl) {
+        console.log('⚠️ Generating runtime audio for:', text.substring(0, 30))
         const { audioBlob, error } = await generateSpeech(text, language)
         if (error || !audioBlob) {
           console.error('Failed to generate speech:', error)
