@@ -131,6 +131,18 @@ function LessonContent() {
 
   const questions = lesson.questions || []
   const currentQuestion = questions[currentQuestionIndex]
+  const questionTypeLabels = {
+    multiple_choice: 'Multiple Choice',
+    listening: 'Listening',
+    matching: 'Matching',
+    sentence_builder: 'Sentence Builder',
+    conversation: 'Conversation',
+  }
+  const questionTypeCounts = questions.reduce((acc, q) => {
+    if (!q?.type) return acc
+    acc[q.type] = (acc[q.type] || 0) + 1
+    return acc
+  }, {})
 
   // Completion Screen
   if (showCompletion && finalStats) {
@@ -241,6 +253,32 @@ function LessonContent() {
           <span className="text-sm font-semibold text-gray-700">
             {currentQuestionIndex + 1} / {questions.length}
           </span>
+        </div>
+
+        {/* Lesson overview */}
+        <div className="mt-4">
+          <div className="card bg-white/70">
+            <h2 className="text-sm font-semibold text-gray-700 mb-2">
+              Lesson Overview
+            </h2>
+            {lesson.description && (
+              <p className="text-sm text-gray-600 mb-3">
+                {lesson.description}
+              </p>
+            )}
+            {Object.keys(questionTypeCounts).length > 0 && (
+              <div className="flex flex-wrap gap-3">
+                {Object.entries(questionTypeCounts).map(([type, count]) => (
+                  <div key={type} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+                    {count}× {questionTypeLabels[type] || type}
+                  </div>
+                ))}
+              </div>
+            )}
+            <p className="text-xs text-gray-500 mt-3">
+              Tip: tap the speaker icons to hear every Kyrgyz phrase before answering.
+            </p>
+          </div>
         </div>
 
         {/* Score */}
