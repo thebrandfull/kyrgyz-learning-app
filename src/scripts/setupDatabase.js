@@ -1,6 +1,16 @@
 // Quick setup script to create tables and seed data
 import { createClient } from '@supabase/supabase-js'
 import { courses, lessons, questions } from '../data/courseContent.js'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Load audio URLs
+const audioUrlsPath = path.join(__dirname, '../data/audioUrls.json')
+const audioUrls = JSON.parse(fs.readFileSync(audioUrlsPath, 'utf-8'))
 
 const supabaseUrl = 'https://oruswxugpdjukyrcxpbo.supabase.co'
 const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ydXN3eHVncGRqdWt5cmN4cGJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzEyMTU2OSwiZXhwIjoyMDc4Njk3NTY5fQ.pfiIAQ-oB8cf3JUOrNjC7DxD9hkUg7ra2WOsZV1ePaE'
@@ -71,11 +81,21 @@ async function setup() {
 
       if (lessonQuestions) {
         for (const question of lessonQuestions) {
-          const { question_audio_key, ...questionData } = question
+          const { question_audio_key, dialogue, question_prompt, ...questionData } = question
+
+          // Map audio key to actual URL from generated audio
+          const audioUrl = question_audio_key ? audioUrls[question_audio_key] : null
+
+          // For conversation questions, store dialogue in question_text and prompt in explanation
+          if (question.type === 'conversation' && dialogue) {
+            questionData.question_text = question_prompt || 'Listen to the conversation'
+            questionData.explanation = JSON.stringify(dialogue)
+          }
+
           questionInserts.push({
             ...questionData,
             lesson_id: courseLessons[i].id,
-            question_audio_url: null, // Audio URLs to be added later
+            question_audio_url: audioUrl || null,
             options: JSON.stringify(question.options),
           })
         }

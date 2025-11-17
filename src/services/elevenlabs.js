@@ -1,4 +1,5 @@
-const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY
+const env = import.meta.env ?? (typeof process !== 'undefined' ? process.env : {})
+const ELEVENLABS_API_KEY = env.VITE_ELEVENLABS_API_KEY
 
 // Speech-to-Text using ElevenLabs Scribe API
 // Note: ElevenLabs STT requires a paid plan with Scribe access
@@ -37,8 +38,8 @@ export const transcribeAudio = async (audioBlob) => {
 
 // Text-to-Speech using ElevenLabs TTS API
 export const generateSpeech = async (text, languageCode = 'ky') => {
-  const voiceId = import.meta.env.VITE_ELEVENLABS_VOICE_ID || 'pNInz6obpgDQGcFmaJgB'
-  const modelId = import.meta.env.VITE_ELEVENLABS_MODEL_ID || 'eleven_turbo_v2_5'
+  const voiceId = env.VITE_ELEVENLABS_VOICE_ID || 'pNInz6obpgDQGcFmaJgB'
+  const modelId = env.VITE_ELEVENLABS_MODEL_ID || 'eleven_turbo_v2_5'
 
   try {
     const response = await fetch(

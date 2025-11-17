@@ -74,17 +74,19 @@ async function seedDatabase() {
 
       if (lessonQuestions) {
         for (const question of lessonQuestions) {
+          const { question_audio_key, ...questionData } = question
+
           // Add audio URL if available
           let questionAudioUrl = null
-          if (question.question_audio_key && audioUrls[question.question_audio_key]) {
-            questionAudioUrl = audioUrls[question.question_audio_key]
+          if (question_audio_key && audioUrls[question_audio_key]) {
+            questionAudioUrl = audioUrls[question_audio_key]
           }
 
           questionInserts.push({
-            ...question,
+            ...questionData,
             lesson_id: courseLessons[i].id,
             question_audio_url: questionAudioUrl,
-            options: JSON.stringify(question.options),
+            options: JSON.stringify(questionData.options),
           })
         }
       }

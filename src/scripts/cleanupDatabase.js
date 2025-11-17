@@ -9,6 +9,25 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey)
 async function cleanup() {
   console.log('\n🧹 Cleaning up database...\n')
 
+  // Delete dependent progress tables first to avoid FK violations
+  console.log('Deleting user course progress...')
+  const { error: courseProgressError } = await supabase
+    .from('user_course_progress')
+    .delete()
+    .neq('id', '00000000-0000-0000-0000-000000000000')
+
+  if (courseProgressError) console.error('Error deleting course progress:', courseProgressError.message)
+  else console.log('✓ Course progress deleted')
+
+  console.log('Deleting user lesson progress...')
+  const { error: lessonProgressError } = await supabase
+    .from('user_lesson_progress')
+    .delete()
+    .neq('id', '00000000-0000-0000-0000-000000000000')
+
+  if (lessonProgressError) console.error('Error deleting lesson progress:', lessonProgressError.message)
+  else console.log('✓ Lesson progress deleted')
+
   // Delete all questions first (due to foreign keys)
   console.log('Deleting all questions...')
   const { error: questionsError } = await supabase

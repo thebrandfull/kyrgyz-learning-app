@@ -17,8 +17,11 @@ async function generateAllAudio() {
   console.log(`\n🎵 Starting audio generation for ${audioToGenerate.length} items...\n`)
 
   for (let i = 0; i < audioToGenerate.length; i++) {
-    const text = audioToGenerate[i]
-    const key = text.replace(/\s+/g, '_').toLowerCase()
+    const item = audioToGenerate[i]
+    const text = typeof item === 'string' ? item : item.text
+    const key = typeof item === 'string'
+      ? text.replace(/\s+/g, '_').toLowerCase()
+      : item.key
 
     try {
       console.log(`[${i + 1}/${audioToGenerate.length}] Generating: "${text}"`)
@@ -50,7 +53,9 @@ async function generateAllAudio() {
 
     } catch (error) {
       console.error(`✗ Error for "${text}": ${error.message}`)
-      audioMap[key] = null
+      if (key) {
+        audioMap[key] = null
+      }
       errorCount++
     }
   }

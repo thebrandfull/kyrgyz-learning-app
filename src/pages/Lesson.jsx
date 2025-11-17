@@ -9,6 +9,7 @@ import MultipleChoice from '../components/questions/MultipleChoice'
 import ListeningQuestion from '../components/questions/ListeningQuestion'
 import MatchingPairs from '../components/questions/MatchingPairs'
 import SentenceBuilder from '../components/questions/SentenceBuilder'
+import ConversationPractice from '../components/questions/ConversationPractice'
 import PointsAnimation from '../components/PointsAnimation'
 
 function LessonContent() {
@@ -274,6 +275,12 @@ function LessonContent() {
             )}
             {currentQuestion.type === 'sentence_builder' && (
               <SentenceBuilder
+                question={currentQuestion}
+                onAnswer={handleAnswer}
+              />
+            )}
+            {currentQuestion.type === 'conversation' && (
+              <ConversationPractice
                 question={currentQuestion}
                 onAnswer={handleAnswer}
               />
